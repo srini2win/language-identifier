@@ -28,6 +28,6 @@ language.
 
 ## JAR Package
 - mvn clean package
-- java -jar target/language-1.0.0.jar
+- java -jar target/language-identifier-1.0.0.jar
 - Enter input: text file name, text file folder and dictionary folder. Press ENTER to leave as default values.
 - Modify text file and Language Indentifier program will indentify the language based on files in dictionary folder

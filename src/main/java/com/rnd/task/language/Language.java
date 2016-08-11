@@ -16,7 +16,7 @@ import java.util.*;
  */
 @Component
 public class Language {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Language.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Language.class);
 
     private static final String UNKNOWN = "UNKNOWN";
     private FileReader fileReader;
@@ -48,7 +48,7 @@ public class Language {
             dictionaryFiles.forEach(dictionaryFile -> dictionary.readAndStore(dictionaryFile));
 
             String language = determineLanguage(pathStr, dictionaryFiles);
-            LOGGER.debug("Language is: {}", language);
+            LOG.debug("Language is: {}", language);
             return language;
         } catch (IOException ex) {
             return UNKNOWN;
@@ -87,24 +87,24 @@ public class Language {
 
         Set<String> allWords = new HashSet<>();
         inputFile.getLines().forEach(line -> {
-            LOGGER.debug("line = {}", line);
+            LOG.debug("line = {}", line);
             line = StringUtils.lowerCase(line.replaceAll(Dictionary.NON_ALPHABET_AND_SPACE_REGEX, ""));
             String[] wordArray = StringUtils.split(line);
             allWords.addAll(Arrays.asList(wordArray));
         });
 
         dictionary.getDictionary().forEach((language, dictionaryWords) -> {
-            LOGGER.debug("Checking {}", language);
+            LOG.debug("Checking {}", language);
 
             allWords.forEach(word -> {
                 if (dictionaryWords.contains(word)) {
-                    LOGGER.debug("dictionary contains word {} for com.rnd.task.language {}", word, language);
+                    LOG.debug("dictionary contains word {} for com.rnd.task.language {}", word, language);
                     languageScore.put(language, languageScore.get(language) + 1);
                 }
             });
         });
 
-        LOGGER.info("Language Scores: {}", languageScore);
+        LOG.info("Language Scores: {}", languageScore);
         return languageScore;
     }
 

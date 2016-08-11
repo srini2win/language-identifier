@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  */
 @Component
 public class FileReader {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileReader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FileReader.class);
 
     public static final String LEGAL_CHARACTERS_REGEX = "^[a-zA-Z \\.\\,\\;\\:]+$";
 
@@ -35,7 +35,7 @@ public class FileReader {
             directoryStream.forEach(path -> fileNames.add(path.toString()));
         }
 
-        LOGGER.trace("fileNames: {}", fileNames);
+        LOG.trace("fileNames: {}", fileNames);
         List<File> dictionaryFiles = new ArrayList<>();
 
         fileNames.forEach(fileName -> {
@@ -53,7 +53,7 @@ public class FileReader {
     public File readAllLinesWithCharacterCheck(String pathStr) throws IOException, FileNotValidException {
         Path path = Paths.get(pathStr);
         List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
-        LOGGER.debug("Reading file {}", path.getFileName().toString());
+        LOG.debug("Reading file {}", path.getFileName().toString());
 
         String parent = path.getParent().toString();
         String fileName = path.getFileName().toString();
@@ -61,11 +61,11 @@ public class FileReader {
 
         for (String line : lines) {
             Matcher matcher = pattern.matcher(line);
-            LOGGER.trace("line = {}", line);
-            LOGGER.trace("matches {}", matcher.matches());
+            LOG.trace("line = {}", line);
+            LOG.trace("matches {}", matcher.matches());
 
             if (StringUtils.isNotBlank(line) && !matcher.matches()) {
-                LOGGER.error("File {} has illegal character(s)", path.getFileName().toString());
+                LOG.error("File {} has illegal character(s)", path.getFileName().toString());
                 //throw new FileNotValidException("File " + pathStr + " contains illegal characters");
             }
         }

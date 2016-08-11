@@ -22,7 +22,7 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
  */
 @SpringBootApplication
 public class Main {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
         ApplicationContext ctx = SpringApplication.run(Main.class, args);
@@ -40,17 +40,17 @@ public class Main {
             try {
                 userInput(language, defaultTextFileName, defaultTextFileFolder, defaultDictionaryFolder, System.in);
 
-                LOGGER.info("############### WELCOME TO LANGUAGE IDENTIFIER ###############");
-                LOGGER.info("You can modify {} in {} manually", language.getTextFileName(), language.getTextFileFolder());
-                LOGGER.info("and Language Identifier will identify the com.rnd.task.language");
-                LOGGER.info("based on existing dictionary files in {}", language.getDictionaryFolder());
-                LOGGER.info("##############################################################");
+                LOG.info("############### WELCOME TO LANGUAGE IDENTIFIER ###############");
+                LOG.info("You can modify {} in {} manually", language.getTextFileName(), language.getTextFileFolder());
+                LOG.info("and Language Identifier will identify the com.rnd.task.language");
+                LOG.info("based on existing dictionary files in {}", language.getDictionaryFolder());
+                LOG.info("##############################################################");
 
                 String languageStr = language.determineLanguage();
-                LOGGER.info("Language is {}", languageStr);
+                LOG.info("Language is {}", languageStr);
                 Path myDir = Paths.get(language.getTextFileFolder());
 
-                LOGGER.info("Watching folder {}", language.getTextFileFolder());
+                LOG.info("Watching folder {}", language.getTextFileFolder());
 
                 while (true) {
                     WatchService watcher = myDir.getFileSystem().newWatchService();
@@ -62,16 +62,16 @@ public class Main {
                     List<WatchEvent<?>> events = watchKey.pollEvents();
                     for (WatchEvent event : events) {
                         if (event.kind() == ENTRY_MODIFY) {
-                            LOGGER.info("File modified: {}", event.context().toString());
+                            LOG.info("File modified: {}", event.context().toString());
                             String lang = language.determineLanguage();
-                            LOGGER.info("Language is {}", lang);
+                            LOG.info("Language is {}", lang);
                         }
                     }
                 }
             } catch (NoSuchFileException e) {
-                LOGGER.error("Invalid folder", e);
+                LOG.error("Invalid folder", e);
             } catch (InterruptedException | IOException e) {
-                LOGGER.error("Error: ", e);
+                LOG.error("Error: ", e);
             }
         }
     }
